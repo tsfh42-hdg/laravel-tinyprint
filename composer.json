@@ -51,7 +51,7 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
-    }
+    },
     "scripts": {
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage"
