@@ -1,0 +1,9 @@
+Fonctionnalité,Supporté
+Streaming vrai (chunked),Yes
+Gzip en streaming,Yes
+Digest SHA-256 / SHA-512,Yes
+Fallback automatique,Yes
+"ESC/POS (gras, coupe, QR…)",Yes
+Impression USB via lp,Yes
+Impression HTTP direct,Yes
+Mémoire max utilisée,~25 Mo même sur 10 Go

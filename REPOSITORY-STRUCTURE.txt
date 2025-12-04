@@ -1,0 +1,18 @@
+laravel-tinyprint/
+├── src/
+│   ├── TinyPrint.php
+│   ├── TinyPrintSwissArmyknife.php
+│   ├── Facades/TinyP.php
+│   ├── TinyPrintServiceProvider.php
+│   └── Traits/HasPrinting.php
+├── config/tinyp.php
+├── resources/views/vendor/tinyprint/
+│   ├── receipt.blade.php
+│   ├── kitchen.blade.php
+│   ├── label-zpl.blade.php
+│   └── invoice-a4.blade.php
+├── .github/workflows/tests.yml
+├── composer.json
+├── phpunit.xml.dist
+├── README.md
+└── LICENSE

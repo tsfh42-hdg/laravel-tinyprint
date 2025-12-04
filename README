@@ -1,0 +1,190 @@
+Laravel TinyPrint
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravel-tinyprint/tinyp.svg?style=flat-square&color=28a745)](https://packagist.org/packages/laravel-tinyprint/tinyp)
+[![Total Downloads](https://img.shields.io/packagist/dt/laravel-tinyprint/tinyp.svg?style=flat-square&color=28a745)](https://packagist.org/packages/laravel-tinyprint/tinyp)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tsfh42-hdg/laravel-tinyprint/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tsfh42-hdg/laravel-tinyprint/actions)
+[![PHP Version Require](https://img.shields.io/packagist/php-v/laravel-tinyprint/tinyp.svg?style=flat-square)](https://packagist.org/packages/laravel-tinyprint/tinyp)
+[![License](https://img.shields.io/packagist/l/laravel-tinyprint/tinyp.svg?style=flat-square&color=blue)](https://github.com/tsfh42-hdg/laravel-tinyprint/blob/main/LICENSE)
+
+Le Swiss Army Knife de l’impression pour Laravel
+Impression zéro dépendance, ultra-rapide et fiable : tickets thermiques 80 mm/58 mm, étiquettes ZPL/EPL, cuisine, A4 PDF, tout avec un seul package.
+
+IPP (CUPS) avec Digest SHA-256/512
+RAW TCP (port 9100) – ESC/POS, ZPL, EPL, etc.
+LPR/LPD legacy
+USB/local via lp (serveur)
+Génération PDF à la volée depuis vues Blade (DomPDF intégré)
+Fallback automatique entre protocoles
+Streaming zéro RAM même sur des fichiers de 50 Mo
+API fluide et façade TinyP::
+100 % configurable via .env et config
+
+Compatible Laravel 9 / 10 / 11 / 12 – PHP 8.1+
+
+* Installation :
+
+Bash
+
+composer require laravel-tinyprint/tinyp
+
+Le package s’auto-découvre (ServiceProvider + Facade).
+
+
+* Publie la configuration et les vues exemples :
+
+#!/bin/bash
+php artisan vendor:publish --tag=tinyp-config
+php artisan vendor:publish --tag=tinyp-views   # optionnel, contient 4 templates prêts à l'emploi
+
+
+
+* Configuration (.env) :
+
+# Délais & robustesse
+TINYP_TIMEOUT=15
+TINYP_CONNECT_TIMEOUT=5
+TINYP_RETRIES=2
+TINYP_DEBUG=true
+
+# Imprimante ticket thermique (le plus courant)
+TINYP_RECEIPT_HOST=192.168.1.42
+TINYP_RECEIPT_PORT=9100
+
+# Imprimante cuisine
+TINYP_KITCHEN_HOST=192.168.1.88
+
+# Imprimante étiquettes Zebra ZPL
+TINYP_LABEL_HOST=10.0.50.10
+
+# Imprimante A4 via CUPS (IPP + SSL + auth)
+TINYP_A4_HOST=cups.monserveur.local
+TINYP_A4_PORT=631
+TINYP_A4_USER=printuser
+TINYP_A4_PASS=SuperSecret123
+TINYP_A4_PRINTER_NAME=HP_LaserJet_Pro
+
+
+* Utilisation rapide :
+
+(Php)
+
+<?php
+
+use TinyP;
+
+// 1. Ticket client classique (Blade → PDF → impression thermique)
+TinyP::printer('receipt')
+     ->pdf('tinyprint::receipt', [
+         'order'       => $order,
+         'shop_name'   => 'Resto Gourmet',
+         'qr_content'  => route('order.show', $order),
+     ])
+     ->cut()
+     ->cashDrawer()   // kick tiroir-caisse
+     ->send();
+
+// 2. Ordre cuisine (beep + gros caractères)
+TinyP::printer('kitchen')
+     ->view('tinyprint::kitchen', ['order' => $order])
+     ->beep(4)
+     ->send();
+
+// 3. Étiquette produit ZPL (direct, pas de PDF)
+TinyP::printer('label')
+     ->rawView('tinyprint::label-zpl', ['product' => $product])
+     ->send();
+
+// 4. Facture A4 via serveur CUPS
+TinyP::printer('a4')
+     ->pdf('tinyprint::invoice-a4', ['invoice' => $invoice])
+     ->send();
+
+?>
+
+
+* API fluide complète :
+
+TinyP::to('192.168.1.100:9100')    // ou TinyP::printer('receipt')
+     ->text("Bonjour\n")
+     ->bold()->text("Thomas")->boldOff()
+     ->doubleWidth()->text("TOTAL 99,90 €\n")->normal()
+     ->qr('https://github.com/tsfh42-hdg/laravel-tinyprint', size: 8)
+     ->cut()
+     ->send();
+
+
+
+
+* Méthodes principales :
+
+
+  * to($host[:$port]), printer($name), raw($host[:$port])
+
+  * view($view, $data), pdf($view, $data), rawView($view, $data)
+   
+  *  text(), bold(), underline(), doubleWidth(), doubleHeight(), large()
+  
+  * qr($content, $options), barcode($content, $type)
+   
+  * cut(), partialCut(), beep($times), cashDrawer()
+   
+  * send() (retourne bool + logue les erreurs)
+    
+
+
+* Trait HasPrinting (super pratique) :
+
+
+   Ajoute simplement le trait à tes modèles :
+
+use LaravelTinyPrint\Traits\HasPrinting;
+
+class Order extends Model
+{
+    use HasPrinting;
+}
+
+
+   Et ensuite :
+
+$order->printReceipt(['shop_name' => 'Mon Resto']);
+$order->printKitchen();
+$order->printAll(); // les deux d’un coup
+
+
+
+* Vues incluses (après vendor:publish --tag=tinyp-views) :
+
+   * resources/views/vendor/tinyprint/receipt.blade.php → ticket 80 mm complet
+   
+   * resources/views/vendor/tinyprint/kitchen.blade.php → ordre cuisine gros caractères
+   
+   * resources/views/vendor/tinyprint/label-zpl.blade.php → étiquette Zebra 100×50 mm
+
+   * resources/views/vendor/tinyprint/invoice-a4.blade.php → facture A4 classique
+    
+
+    Tu peux les copier et les personnaliser à l’infini.
+
+
+
+* Support & contribution :
+
+Repo : https://github.com/tsfh42-hdg/laravel-tinyprint
+
+Issues & PR bienvenus !
+
+Auteur : Thomas HARDING (tsfh42-hdg sur GitHub)
+
+         En fait, c'est Grok AI qui a réalisé toute l'intégration Laravel
+         en partant de mon monofichier "Printing Swiss Army Knife" extrait
+         de mon projet Phpprintipp sur https://savannah.nongnu.org
+
+
+Licence :
+
+AGPL-3.0-or-later
+
+Le code est libre, tu peux l’utiliser, le modifier et le redistribuer (même en SaaS) tant que tu conserves la licence AGPL.
+
+Bon print à tous !

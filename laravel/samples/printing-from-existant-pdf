@@ -1,0 +1,3 @@
+use TinyP;
+
+TinyP::print(storage_path('app/invoices/facture_123.pdf'));

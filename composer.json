@@ -1,0 +1,59 @@
+{
+    "name": "laravel-tinyprint/tinyp",
+    "description": "Swiss Army Knife d’impression pour Laravel – IPP, RAW, LPR, USB, ESC/POS, ZPL, PDF Blade, zéro dépendance lourde",
+    "type": "library",
+    "version": "1.0.0",
+    "minimum-stability": "dev",
+    "keywords": ["laravel", "printing", "escpos", "zpl", "ipp", "cups", "receipt", "ticket", "thermal", "pos"],
+    "homepage": "https://github.com/tsfh42-hdg/laravel-tinyprint",
+    "license": "AGPL-3.0-or-later",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Thomas HARDING",
+            "email": "thomas.harding@protonmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^9|^10|^11|^12",
+        "barryvdh/laravel-dompdf": "^2.0|^3.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.0|^8.0|^9.0",
+        "phpunit/phpunit": "^10|^11"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelTinyPrint\\Tinyp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelTinyPrint\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelTinyPrint\\Tinyp\\TinyPrintServiceProvider"
+            ],
+            "aliases": {
+                "TinyP": "LaravelTinyPrint\\Facades\\TinyP"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage"
+    }
+}

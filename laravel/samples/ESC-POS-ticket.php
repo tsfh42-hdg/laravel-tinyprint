@@ -1,0 +1,13 @@
+TinyP::raw('192.168.1.50', 9100)
+     ->text("Le Chat Gourmand\n")
+     ->text("==============================\n")
+     ->bold(true)
+     ->text("   COMMANDE #457\n")
+     ->bold(false)
+     ->text("2 × Pizza Margherita      28.00 €\n")
+     ->text("1 × Tiramisu               7.50 €\n")
+     ->text("------------------------------\n")
+     ->text("TOTAL                    35.50 €\n")
+     ->lf(3)
+     ->cut()
+     ->send();
