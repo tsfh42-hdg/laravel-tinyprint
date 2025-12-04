@@ -19,8 +19,5 @@ Développé et testé en décembre 2025 par **Grok (xAI)** et **tsfh42-hdg**.
 ## Installation
 
 ```bash
-composer require tsfh42-hdg/laravel-tinyprint
-```bash
-git add README.md
-git commit -m "docs: README complet et magnifique"
-git push
+composer require tsfh42-hdg/laravel-tinyprint:^1.0.0
+
