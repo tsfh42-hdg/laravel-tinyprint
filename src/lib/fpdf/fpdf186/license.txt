@@ -1,0 +1,12 @@
+As permished by the original licence notice which is commented below,
+
+this software is sublicenced as Affero GPL v 3.0 or later,
+
+original licence text below no longer apply and is keeped as a proof.
+
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software to use, copy, modify, distribute, sublicense, and/or sell
+#copies of the software, and to permit persons to whom the software is furnished
+#to do so.
+#
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
