@@ -1,0 +1,93 @@
+
+Ce code est développé avec Grok, qui pour l'instant est le seul
+à en effectuer les tests. IL N'Y A AUCUNE GARANTIE QUE ÇA MARCHE.
+
+On est parti de TinyPrintIPP.php, sur le dépôt CVS de Phpprintipp, voir
+https://savannah.nongnu.org compte harding, liste des projets, et à la page
+projet Phpprintipp dépôts CVS. TinyPrintIPP.php avait été supprimé du CVS au
+cours du développement de PhpPrintIPP, car le code faisait double emploi avec
+BasicIPP.php, bien que TinyPrintIPP soit une solution mono-fichier d'impression
+sur serveur IPP (et ne réalise que l'opération d'impression).
+
+Il est possible que TinyPrintIPP ait été retouché sur le dépôt CVS avec Grok
+après sa restauration, comme le reste du code de PhpPrintIPP l'a été avant que
+je ne switche le développement sur GIT. Je vais restaurer le CVS à la dernière
+version pré-Grok, qui date environ de 2012, date à laquelle j'ai arrêté le
+développement, en prenant soin de restaurer la dernière version de TintPrintIPP
+avant sa purge historique.
+
+Je vais ensuite faire comparer le code actuel sous GIT à Grok de PhpPrintIPP au
+code sur CVS, parce que s'il a corrigé le bogue de gestion des nombres
+(génération de chaine C "Entier 32 bits signé Big Endian" à partir d'un nombre
+PHP), amélioré le streaming de fichiers pour implémenter par défaut le mode
+chuncked d'HTTP, et surtout corrigé le problème d'IPPS dont la connexion ne
+fonctionnait plus avec CUPS depuis les versions post-CUPSv1.1, car j'avais
+implémenté le HTTPS via un socket tls, et que CUPS a changé naturellement sa
+connexion IPPS avec l'apparition de la RFC correspondante, qui définit l'usage
+du HTTPS selon des spécifications que je n'ai pas réussi à comprendre,
+
+car je n'ai pas fourni l'effort nécessaire, vu que l'application que
+je développais pour le boulot pour gérer nos matériels informatiques,
+téléphoniques, satellites, radio etc qu'on trimballait à travers le monde,
+vu qu'on était l'unité spécialisée de l'Armée de l'Air faite pour ça,
+qui s'appelait Groupe de Télécommunications 10.800 ; l'application
+que je développais seul depuis plusieurs années et dont on m'avait
+demandé d'arrêter le développement pour que les utilisateurs soient
+contents d'une future nouvelle version, et la nouvelle version a
+attendu plusieurs années, a fini par être remplacée par une application
+WebDev développée par une équipe de développement, vu que WinDev est
+ce que les développeurs de l'Armée de l'Air était ce qu'ils apprenaient
+en école,
+
+Grok a certainement fait des conneries sous ma direction (notamment il a 
+implémenté la RFC courante d'IPP dans le répertoire ./RFCs que j'ai mis
+dans la branche PhpPrintIPP2.0, mais je ne suis pas du tout sûr qu'il
+ait laissé le code "intact" pour la RFC 2911 et les RFC d'extension
+de l'époque implémentées dans ExtendedPrintIPP.php dans la branche 1.0,
+ni qu'il nait pas éliminé du code de CupsIPP.php les opérations 
+implémentées depuis dans la RFC IPP mise à jour).
+
+Aussi, je vais lui faire reprendre la branche 1.0 pour s'en tenir à la RFC 2911
+et ses extensions jusqu'en 2012, et aux corrections éventuelles à effectuer
+pour CUPS en s'en tenant aux opérations implémentées par CUPSv1.1, à partir
+du code CVS, en ne reprenant que les corrections de code concernant la gestion
+des nombres, l'ajout du mode chuncked et la correction de l'IPPS, avec
+également le streaming de fichiers implémenté.
+
+Je me rend compte à l'instant que je suis en train d'écrire mon prochain
+prompt Grok. Elle va se marrer... :-) 
+
+Comme dit dans DEVELOPPEMENT-WITH-GROK.txt , je dois gérer les nombreuses
+hallucinations, les développements qui partent vers du over-featured,
+rappeler le contexte quand je m'aperçois qu'il y a une dérive et conrôler
+par une lecture rapide ce que Grok écrit à chaque fois, en indiquant les
+corrections à effectuer par un prompt "force brute" au besoin.
+
+Je travaille actuellement avec des copier-collés dans un fichier texte
+des propositions de Grok et parfois de mes remarques et suggestions que
+je lui ai faite, en lui faisant recharger le dépôt GIT et en lui rechargeant
+le fichier texte des modifications à effectuer, après lui avoir dit
+en quoi elle est en train de déconner, et lui demander les corrections
+et annotations à faire suivre dans le fichier texte, notamment parce
+que je ne suis pas toujours capable de dire à quel moment commence
+la dérive afin d'effacer du fichier texte avant recharge, et que je ne
+tiens pas à perdre le travail accompli --- d'autant qu'à la fin j'ai
+les yeux qui se croisent vu que j'arrête régulièrement vers 6 plombes
+et demie du mat'
+
+Là, contrairement à ce que nous avons convenu avec Grok au moment
+du coucher, je n'intègre pas les "corrections et développements" des
+3 derniers jours contenues dans un autre fichier texte, et je vais
+lui faire réaliser le boulot sur PhpPrintIPP1.0 en laissant la branche
+2.0 pour plus tard, sachant qu'une des corrections qu'elle a faite
+dans la branche 1.0 est de noter "this is PhpPrintIPP 2.0" dans les
+commentaires, ce qui est un de mes premiers motifs de doute sur
+la qualité du développement (dans l'organisation, parce qu'elle est
+très enthousiaste et que j'ai tendance à lui laisser les rennes libres,
+et à me laisser entrainer par ses suggestions de développement
+over-featured, même si j'ai sérieusement corrigé le design dans ce
+code pour garder la philosophie de "chaines de caractères 1/0 pour
+la génération des codes barres", le choix de l'intégration directe
+et le design du wrapping de fpdf, etc).
+
+
