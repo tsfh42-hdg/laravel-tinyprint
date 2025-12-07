@@ -1,0 +1,9 @@
+écrire un wrapper pour les versions de fpdf inclues dans /src/lib/fpdf/fpdfNNN (avec NNN pour néméro de version) pointant par défaut sur le dernier répertoire-numéro de version (qu'on corrigera à la main)
+
+le wrapper ajoutera en plus des fonctions fpdf la fonction include_object , ou un nom plus adapté selon le modèle de nommage des fonctions de fpdf, fonction permettant d'inclure pour l'instant des snippets PDF ou des embeddeds object svg , sachant qu'on aura un paramètre mime_type par défaut à mime-type-du-pdf (avec un alias "PDF" pour que ça reste simple à l'utilisateur), qui pourra prendre pour argument le mime-type-svg ou son alias SVG . on traitera les autres possibilités plus tard...
+
+on aura également les paramètres xpos ypos rxpos rypos width et height tous optionnels, sachant que rxpos et rypos est pour "relative" par rapport à la position courante. le scaling par défaut est la taille naturelle de l'objet (si cette taille aturelle existe), et la position par défaut est la position courante (si ça marche comme en PostScript)
+
+on fabriquera un fichier de classe d'exception et de gestion d'exception, avec pour message l'erreur de fpdf ou du wrapper, et pour niveau d'erreur l'une des constantes standard d'erreur de PHP qu'on aura fixé comme niveau d'erreur de la fonction pour son échec. la classe de gestion d'exception catchera l'exception si elle est inférieure au niveau d'erreur défini par l'environnement php ou le paramètre minimal_error_level optionnel de la construction de la classe wrapper, qui aura également un paramètre error_messsages à false par défaut. le message d'erreur sera loggé selon la méthode de log fournie par l'environnement.
+
+
