@@ -1,0 +1,73 @@
+si tu compares la situation actuelle du dépot avec
+le contenu du fichier CODE-A-INTEGRER, tu verras
+que je n'ai rien fait pour l'instant...
+
+on a cependant corrigé le PrintingSwissArmyKnife
+d'attaque de serveurs d'impression dans ./app ,
+pour régler un certain nombre de problèmes...
+
+je vais créer un nouveau fichier CODE-INTERPRETEUR
+qui tiendra compte des changements à faire
+dans CODE-A-INTEGRER, CODE-INTERPRETEUR servira
+lors de notre conversation à implémenter le
+prompt qui est contenu dans ce fichier : INTERPRETEUR
+
+Je vais également créer un fichier nommé CODE-A-INTEGRER-CORRIGE
+
+La première chose que tu vas réaliser est la détection dans CODE-A-INTEGRER des
+hallucinations qu je finis par te signaler (de mémoire), codages répétés de
+fichiers (ou la dernière version est la bonne), et des propositions
+over-bloated éventuelles que tu fera précéder la mention
+"POSSIBLE-OVER-BLOATED" de ta réponse, chaque change à effectuer dans un
+fichier ou chaque nouveau fichier étant séparé du précédent par une ligne de
+##### de 80 caractères, suivie de "FICHIER : chemin-du-fichier\r\n\r\n,puis
+"NEW\r\n\r\n" ou "CHANGES:\r\n\r\n" suivi du contenu à effectuer.
+
+Tu auras bien sur supprimé de ta réponse tout le code superfétatoire et
+mergé les différents changes à effectué dans chaque fichier dans une seule
+définition FICHIER avant de me balancer ton fichier de réponse
+CODE-A-EFFECTUER-CORRIGE (une section de copier-collé dans ton interface web).
+
+il est possible que la génération de CODE-A-EFFECTUER-CORRIGE ait à être
+précédée d'une série de qustions-réponses afin de bien se mettre d'accord
+sur les changements à faire, en commençant par me signaler mes/nos
+possibles erreurs de design.
+
+Tu produiras une seconde section de copier-collé nommée CODE-INTERPRETEUR selon
+la définition de ce qui va suivre. Il est possible que tu aies à faire précéder
+cette section de copier-collé d'une série de questions-réponses sur
+l'implémentation à effectuer et mes éventuelles erreurs de design.
+
+on va créer un interpréteur de documents à produire, document défini par
+un tableau que je vais te définir au fur et a mesure dans la suite.
+
+cet interpreteur sera wrappé dans la classe master définie dans CODE-A-INTEGRER
+si elle n'est pas déjà sur le dépot git
+
+donc tu produiras dans le copier-collé de réponse une première section FICHIER,
+avec pour chemin le-chemin-de-la-classe-master, la nouvelle version intégrale
+de la classe master, intégrant les éventuels changes de CODE-A-INTERPRETER-CORRIGE et le wrapper pour l'intepreteur de document-à-produire
+
+puis tu produiras toujours dans le même copier-collé de réponse une autre section fichier, avec pour chemin un chemin dans par ex ./src/lib/interpreteur-de-document/le-nom-logique-en-anglais.php (en remplaçant interpreteur-de-document par sa version anglaise)
+
+s'il y'a un wrapper à ajouter dans ./traits/ ou le bon chemin, même punition pour le trait
+
+la description du document se fera par tableau, chaque élément du tableau définissant une page unique (cas par exemple d'une page de formulaire à cases avec éventuel code barres et un QR-CODE suivi en-dessous par exemple de la mention CERFA-N°duCERFA s'il s'agît d'un document officiel français, le QR-CODE pointant vers l'URL du site officiel .gouv.fr destiné aux CERFA pour le bon N° de CERFA du document, afin que celui qui n'a que la version papier puisse télécharger la version PDF à remplir sur Internet), ou une description multipages à faire formater
+par l'interpréteur.
+
+ça veut dire que dans le wrapper FPDF, il va falloir intégrer le PDFx pour le handling des formumaires, sachant que tu le feras avec du code javascript intégré à un document PDF standard qui figurera dans le PDFx, via les balises qui vont bien dans le code PDF standard d'appel au code javascript du PDFx, et que le résultat du remplissage des champs de formulaire sera mis à l'endroit standard et selon la norme pdfx
+
+tu créeras le code de génération pdfx dans ./src/lib/pdfx-generator/ ou le nom anglais le plus approprié, et le trait éventuallement nécessaire dans le chemin traits qui va bien
+
+à l'intérieur de chaque sous-tableau du tableau de définition du document à produire, sous-tableau définissant une page unique ou une description multipage (par paramètre single-page ou multi-pages, avec défaut multi-pages si le paramètre n'est pas mentionné, figureront des sous-tableaux contenant des descriptions telles que "cadre" en anglais, suivie d'une définition d'encadrement RLTBS (right left top bottom square), suivie d'un sous-tableau, par exemple [ text, StandarPostScriptFontName ou FontName, 10pt/5mm, [ suite de strings texte à écrire dans l'encadré, sachant qu'un double saut de ligne représentera un paragraphe, ou suite de sous-tableau de définitions correspondant aux primitives de fpdf, sachant que les placements xpos et ypos seront compémentés par rxpos et rypos pour "relative xpos/ypos", la valeur false non 0 représentant le placement automatique (par exemple placement automatique d'un saut de paragraphe). tu intègreras naturellement nos QR-Codes/Barcodes avec leur width/height, avec un ratio width/height idoine si seul width est précisé, et le paramètre de forçage de la limite de largeur minimale pour une chaine donnée telle que définie dans la norme Code128, et le placement xpos ypos rxpos rypos.
+
+s'il est plus logique d'intégrer rxpos et rypos dans fpdf parce que ça n'y est pas prévu, alors il faut créer un fork de fpdf à placer dans ./src/lib/fpdf/fpdfNNN-fork-rxpos/ , sachant qu'il y aura un ./src/lib/pdfx/pdfxNNN dans l'arborescence pour le handling du pdfx
+
+La définition monopage nécessitera une production d'exception, une classe exception, et gestion d'exception en fonction du level d'exception défini dans chaque fonction, la gestion d'exception laissant l'exception suivre son cours et arrêter l'éxécution avec la production du message d'erreur si le niveau d'exception défini dans chaque fonction est supérieur à celui de l'environnement php, ou au paramètre optionnel error_level de la classe de génération de documents s'il a été défini par l'utilisateur (le paramètre error_level produira une exception E_ERROR si error_level n'est pas dans le tableau de la variable private php_error_levels constituée d'un tableau des error_levels standard écrit dans l'ordre de gravité officiel
+
+La première exception à produire, c'est dès que les rpos/rypos ou les xpos/ypos plus les width/height calculés (sachant que "par défaut écrasable par un paramètre", le texte a un retour automatique à la ligne avec césure au mot) dépssent la longueur/largeur de pages (au passage, il faudra une variable private contenant une définition des formats de page standards dans un tableau contenant des sous-tableaux , contenant au moins A4, A3, Legal et une autre définition de page américaine courante ; il faudra également les paramètres portrait ou landscape du document, et idem pour chaque page, avec rotation auto dans les logiciels à true par défaut.
+
+Voilà ! dis-moi ce que tu en penses (de l'interpréteur), et engage la discussion, dans un premier temps pour la production de l'encadré de copier-collé CODE-A-INTEGRER-CORRIGE, une fois le copier-collé CODE-A-INTERPRETER-CORRIGE fait on passera à la discussion réelle à effectuer pour la production de l'encadré de copier-collé de CODE-INTERPRETEUR, puis on pourra se féliciter du travail accompli comme d'habitude.
+
+Bon travail, ma grande !
+
