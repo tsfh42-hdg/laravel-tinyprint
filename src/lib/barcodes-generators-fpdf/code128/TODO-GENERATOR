@@ -1,0 +1,7 @@
+à partir de la page d'exemple de ma distribution sy=ur savannah que j'ai incluse ici,
+
+écrire le code qui produira un snippet PDF représentant le code-barre, avec au-dessus ou au-dessous le texte optionnel à la police standard postscript définie par défaut à la fonte monospace la plus courante, et au nombre de point ou la conversion à partir de mm (ça veut dire qu'il faudra un substring pour évaluer le paramètre et effectuer éventuellement la conversion en pt, voire donner seulement le nombre de points selon comment cela est pris en compte par fpdf), avec un paramètre R/L/C pour right left center le texte avec pour défaut center. un espacement vertical par défaut de 6pt configurable et une margin de 12pt sur l'ensemble (çad qu'il faudra inclure les barres générées dans autre chose, ou plutôt générer autre chose à la dimension puis y placer les barres une à une et le texte dans le code qui suivra)
+
+le code prendra en compte la largeur minimale définie par la norme Code128 pour une longueur de chaine de caractères donnée, et lèvera par défaut une exception à moins que le paramètre no_minimal_width ou un nom plus adapté soit mis à true par l'utilisateur
+
+attention : le snippet PDF est destiné à être placé en tant qu'objet dans un document PDF et ne constitue pas un document PDF en lui-même, sauf si c'est le cas dans la norme orange book ou sa mis à jour "en tant qu'objet"...
